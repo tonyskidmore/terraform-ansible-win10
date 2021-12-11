@@ -1,0 +1,1 @@
+ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" ${ansible_user}@${linux_vm_ip}

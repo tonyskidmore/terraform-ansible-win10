@@ -1,0 +1,53 @@
+#!/bin/sh
+
+dnf -y install git
+dnf -y update
+
+python3 -m pip install --upgrade pip
+python3 -m pip install --upgrade setuptools
+python3 -m pip install pywinrm>=0.3.0
+python3 -m pip install ansible==4.8.0
+ansible-galaxy collection install ansible.windows
+
+cat > /home/${ansible_user}/ansible.cfg <<EOF
+[defaults]
+inventory = ./inventory
+deprecation_warnings = false
+callback_whitelist = ansible.posix.profile_tasks
+EOF
+
+cat > /home/${ansible_user}/inventory <<EOF
+[win]
+${win_vm_ip}
+
+[win:vars]
+ansible_user=${ansible_user}
+ansible_password=${ansible_password}
+ansible_connection=winrm
+ansible_winrm_server_cert_validation=ignore
+EOF
+
+cat > /home/${ansible_user}/playbook.yml <<EOF
+---
+
+- name: Windows playbook
+  hosts: win
+
+  pre_tasks:
+
+    - name: Get ansible nodename
+      debug:
+        var: ansible_nodename
+
+  tasks:
+
+    - name: Run ansible-role-windev role
+      include_role:
+        name: ansible-role-windev
+
+EOF
+
+mkdir -p /home/${ansible_user}/roles/ansible-role-windev
+git clone https://github.com/tonyskidmore/ansible-role-windev.git /home/${ansible_user}/roles/ansible-role-windev
+
+chown -R ${ansible_user}:${ansible_user} /home/adminuser/*
