@@ -220,8 +220,16 @@ resource "local_file" "ansible_ssh" {
   )
 }
 
+
 resource "null_resource" "powershell" {
   provisioner "local-exec" {
     command = "Powershell -file ${path.module}/scripts/New-RdpFile.ps1 -Path ${path.module} -FullAddress ${local.win_ip_address} -Username ${var.win_vm_admin_username} -Password ${var.win_vm_admin_password}"
+  }
+}
+
+resource "null_resource" "destroy_rdp" {
+  provisioner "local-exec" {
+    when = destroy
+    command = "rm ${path.module}/win_vm.rdp"
   }
 }
