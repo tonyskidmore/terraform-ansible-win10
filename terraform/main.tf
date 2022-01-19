@@ -177,6 +177,12 @@ resource "azurerm_network_interface" "linuxnic" {
   }
 }
 
+# https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key
+resource "tls_private_key" "linux_ssh" {
+  algorithm = "RSA"
+  rsa_bits = 4096
+}
+
 resource "azurerm_linux_virtual_machine" "linuxvm" {
   name                = "vm-${var.linux_vm_name}"
   resource_group_name = azurerm_resource_group.rg[0].name
@@ -195,7 +201,8 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
 
   admin_ssh_key {
     username   = var.linux_vm_admin_username
-    public_key = file("~/.ssh/id_rsa.pub")
+    public_key = tls_private_key.linux_ssh.public_key_openssh
+    # public_key = file("~/.ssh/id_rsa.pub")
   }
 
   os_disk {
@@ -209,6 +216,13 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
     sku       = "8.2"
     version   = "latest"
   }
+}
+
+resource "local_file" "ssh_priv_key" {
+  filename             = pathexpand("~/.ssh/terraform_ansible_win10_pem")
+  content              = tls_private_key.linux_ssh.private_key_pem
+  directory_permission = "0700"
+  file_permission      = "0600"
 }
 
 resource "local_file" "ansible_ssh" {
