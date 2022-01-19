@@ -4,7 +4,7 @@
 # ignore local variable source
 terraform.auto.tfvars
 
-terraform/.terraform.lock.hcl
+.terraform.lock.hcl
 
 # .tfstate files
 *.tfstate

@@ -180,7 +180,7 @@ resource "azurerm_network_interface" "linuxnic" {
 # https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key
 resource "tls_private_key" "linux_ssh" {
   algorithm = "RSA"
-  rsa_bits = 4096
+  rsa_bits  = 4096
 }
 
 resource "azurerm_linux_virtual_machine" "linuxvm" {
@@ -210,15 +210,14 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
     storage_account_type = "Standard_LRS"
   }
 
-  source_image_reference = var.linux_source_image_reference
-
-  # source_image_reference {
-  #   publisher = "RedHat"
-  #   offer     = "RHEL"
-  #   sku       = "8.2"
-  #   version   = "latest"
-  # }
+  source_image_reference {
+    publisher = var.linux_image_publisher
+    offer     = var.linux_image_offer
+    sku       = var.linux_image_sku
+    version   = var.linux_image_version
+  }
 }
+
 
 resource "local_file" "ssh_priv_key" {
   filename             = pathexpand("~/.ssh/terraform_ansible_win10_pem")
@@ -253,7 +252,7 @@ resource "null_resource" "create_rdp_file" {
 resource "null_resource" "destroy_rdp_file" {
   count = local.win_check
   provisioner "local-exec" {
-    when = destroy
+    when    = destroy
     command = "Remove-Item -Path ${path.module}/win_vm.rdp -Force -Confirm:$false"
   }
 }
