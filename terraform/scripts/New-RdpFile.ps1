@@ -9,7 +9,13 @@ Param(
     [string]$Username,
 
     [Parameter(Mandatory=$true)]
-    [string]$Password
+    [string]$Password,
+
+    [Parameter()]
+    [string]$DesktopWidth="1280",
+
+    [Parameter()]
+    [string]$DesktopHeight="800"
 )
 
 # credit:
@@ -27,8 +33,8 @@ username:s:$Username
 password 51:b:$passwordEncryptedAsHex
 screen mode id:i:1
 use multimon:i:0
-desktopwidth:i:1280
-desktopheight:i:800
+desktopwidth:i:$DesktopWidth
+desktopheight:i:$DesktopHeight
 session bpp:i:32
 winposstr:s:0,3,0,0,800,600
 compression:i:1
