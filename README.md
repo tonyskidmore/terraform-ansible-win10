@@ -30,6 +30,22 @@ The purpose of this repository is to highlight a few interesting topics in regar
 * [Terraform Authenticated to Azure](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs#authenticating-to-azure)
 * Able to run PowerShell scripts (if running on Windows)
 
+````bash
+
+terraform apply -var="mgmt_source_address_prefix=80.193.188.37"
+
+````
+
+````bash
+
+git clone https://github.com/tonyskidmore/terraform-ansible-win10.git
+cd terraform-ansible-win10
+terraform init
+terraform plan -out tfplan
+terraform apply tfplan
+
+````
+
 ### Useful References
 Terraform [Get Started - Azure](https://learn.hashicorp.com/collections/terraform/azure-get-started)  
 [Terraform with Azure](https://docs.microsoft.com/en-us/azure/developer/terraform/overview)  

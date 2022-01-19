@@ -253,6 +253,6 @@ resource "null_resource" "destroy_rdp_file" {
   count = local.win_check
   provisioner "local-exec" {
     when    = destroy
-    command = "Remove-Item -Path ${path.module}/win_vm.rdp -Force -Confirm:$false"
+    command = "del win_vm.rdp"
   }
 }
