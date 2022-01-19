@@ -92,7 +92,7 @@ resource "azurerm_network_security_group" "nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = data.http.ifconfig.body
+    source_address_prefix      = local.source_address_prefix
     destination_address_prefix = "*"
   }
 
@@ -104,7 +104,7 @@ resource "azurerm_network_security_group" "nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "3389"
-    source_address_prefix      = data.http.ifconfig.body
+    source_address_prefix      = local.source_address_prefix
     destination_address_prefix = "*"
   }
 }
@@ -210,12 +210,14 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
     storage_account_type = "Standard_LRS"
   }
 
-  source_image_reference {
-    publisher = "RedHat"
-    offer     = "RHEL"
-    sku       = "8.2"
-    version   = "latest"
-  }
+  source_image_reference = var.linux_source_image_reference
+
+  # source_image_reference {
+  #   publisher = "RedHat"
+  #   offer     = "RHEL"
+  #   sku       = "8.2"
+  #   version   = "latest"
+  # }
 }
 
 resource "local_file" "ssh_priv_key" {
@@ -234,23 +236,24 @@ resource "local_file" "ansible_ssh" {
   )
 }
 
-resource "local_file" "win_vm_rdp" {
-  filename = "${path.module}/win_vm.rdp"
+# https://aws-blog.de/2021/05/terraform-os-detection.html
+data "external" "os" {
+  working_dir = path.module
+  program     = ["printf", "{\"os\": \"Linux\"}"]
 }
 
-
-resource "null_resource" "powershell" {
+resource "null_resource" "create_rdp_file" {
+  count = local.win_check
   provisioner "local-exec" {
     command = "Powershell -file ${path.module}/scripts/New-RdpFile.ps1 -Path ${path.module} -FullAddress ${local.win_ip_address} -Username ${var.win_vm_admin_username} -Password ${var.win_vm_admin_password}"
   }
-  depends_on = [
-    local_file.win_vm_rdp
-  ]
+
 }
 
-# resource "null_resource" "destroy_rdp" {
-#   provisioner "local-exec" {
-#     when = destroy
-#     command = "rm ${path.module}/win_vm.rdp"
-#   }
-# }
+resource "null_resource" "destroy_rdp_file" {
+  count = local.win_check
+  provisioner "local-exec" {
+    when = destroy
+    command = "Remove-Item -Path ${path.module}/win_vm.rdp -Force -Confirm:$false"
+  }
+}

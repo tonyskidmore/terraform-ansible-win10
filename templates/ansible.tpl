@@ -50,4 +50,4 @@ EOF
 mkdir -p /home/${ansible_user}/roles/ansible-role-windev
 git clone https://github.com/tonyskidmore/ansible-role-windev.git /home/${ansible_user}/roles/ansible-role-windev
 
-chown -R ${ansible_user}:${ansible_user} /home/adminuser/*
+chown -R ${ansible_user}:${ansible_user} /home/${ansible_user}/*

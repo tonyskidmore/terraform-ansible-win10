@@ -64,6 +64,13 @@ variable "subnet_address_prefix" {
   default     = ["192.168.1.0/24"]
 }
 
+# defaults to automatic detection
+variable "mgmt_source_address_prefix" {
+  type        = string
+  description = "Source address for NSG rule to allow management access (RDP/SSH)"
+  default     = ""
+}
+
 variable "win_vm_name" {
   type        = string
   description = "Windows 10 VM name"
@@ -104,4 +111,15 @@ variable "linux_vm_admin_username" {
   type        = string
   description = "Linux VM admin user"
   default     = "adminuser"
+}
+
+variable "linux_source_image_reference" {
+  type        = map(string)
+  description = "Linux source image"
+  default     = {
+    publisher = "RedHat"
+    offer     = "RHEL"
+    sku       = "8.2"
+    version   = "latest"
+  }
 }
