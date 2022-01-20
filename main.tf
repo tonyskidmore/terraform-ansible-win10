@@ -213,7 +213,7 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
 
   dynamic "source_image_reference" {
 
-    for_each = [ local.source_image_references[index(local.source_image_references.*.key, var.linux_source_image_reference)] ]
+    for_each = [local.source_image_references[index(local.source_image_references.*.key, var.linux_source_image_reference)]]
     content {
       publisher = source_image_reference.value.publisher
       offer     = source_image_reference.value.offer
