@@ -29,6 +29,7 @@ The purpose of this repository is to highlight a few interesting topics in regar
 * SSH executable (to establish SSH connection to the Ansible host)
 * [Terraform Authenticated to Azure](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs#authenticating-to-azure)
 * Able to run PowerShell scripts (if running on Windows)
+* When running `terraform destroy` the Windows VM should be powered on
 
 ````bash
 

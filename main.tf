@@ -210,12 +210,27 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
     storage_account_type = "Standard_LRS"
   }
 
-  source_image_reference {
-    publisher = var.linux_image_publisher
-    offer     = var.linux_image_offer
-    sku       = var.linux_image_sku
-    version   = var.linux_image_version
+  # source_image_reference {
+  #   publisher = var.linux_image_publisher
+  #   offer     = var.linux_image_offer
+  #   sku       = var.linux_image_sku
+  #   version   = var.linux_image_version
+  # }
+
+  dynamic "source_image_reference" {
+    # for_each = {
+    #   for image, publisher in local.source_image_references : image.key => image
+    #   if image.key == var.linux_source_image_reference
+    # }
+    for_each = [ local.source_image_references[index(local.source_image_references.*.key, var.linux_source_image_reference)] ]
+    content {
+      publisher = source_image_reference.value.publisher
+      offer     = source_image_reference.value.offer
+      sku       = source_image_reference.value.sku
+      version   = source_image_reference.value.version
+    }
   }
+
 }
 
 

@@ -7,4 +7,20 @@ locals {
   ssh_source_address_prefix = var.mgmt_ssh_source_address_prefix == "" ? data.http.ifconfig.body : var.mgmt_ssh_source_address_prefix
   rdp_source_address_prefix = var.mgmt_rdp_source_address_prefix == "" ? data.http.ifconfig.body : var.mgmt_rdp_source_address_prefix
   win_check                 = data.external.os.result.os == "Windows" ? 1 : 0
+  source_image_references = [
+  {
+    "key": "RedHat",
+    "publisher": "RedHat",
+    "offer": "RHEL"
+    "sku": "8.2"
+    "version": "latest"
+  },
+  {
+    "key": "Ubuntu",
+    "publisher": "canonical",
+    "offer": "0001-com-ubuntu-server-focal"
+    "sku": "20_04-lts"
+    "version": "latest"
+  }
+]
 }

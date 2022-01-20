@@ -1,7 +1,21 @@
 #!/bin/sh
 
-dnf -y install git
-dnf -y update
+source /etc/os-release
+
+if [[ "$ID" == "ubuntu" ]]
+then
+  apt update
+  apt -y upgrade
+  apt install -y python3-pip
+elif [[ "$ID" == "rhel" ]]
+then
+  dnf -y install git
+  dnf -y update
+else
+  echo "Failed to determine OS" > /tmp/cloud-init.log
+fi
+
+
 
 python3 -m pip install --upgrade pip
 python3 -m pip install --upgrade setuptools

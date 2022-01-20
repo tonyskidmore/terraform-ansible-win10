@@ -120,26 +120,12 @@ variable "linux_vm_admin_username" {
   default     = "adminuser"
 }
 
-variable "linux_image_publisher" {
+variable "linux_source_image_reference" {
   type        = string
-  description = "Linux source image reference publisher"
-  default     = "RedHat"
-}
-
-variable "linux_image_offer" {
-  type        = string
-  description = "Linux source image reference offer"
-  default     = "RHEL"
-}
-
-variable "linux_image_sku" {
-  type        = string
-  description = "Linux source image reference sku"
-  default     = "8.2"
-}
-
-variable "linux_image_version" {
-  type        = string
-  description = "Linux source image reference version"
-  default     = "latest"
+  description = "Linux source image reference"
+  default     = "Ubuntu"
+  validation {
+    condition     = contains(["RedHat", "Ubuntu"], var.linux_source_image_reference)
+    error_message = "The linux_source_image_reference must be a valid value."
+  }
 }
