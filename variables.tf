@@ -100,6 +100,7 @@ variable "win_vm_admin_password" {
   type        = string
   description = "Windows VM admin password"
   default     = "D3vPassw0rd1234!"
+  sensitive   = true
 }
 
 variable "linux_vm_name" {
