@@ -27,3 +27,8 @@ output "linuxvm_public_ip" {
   value       = azurerm_linux_virtual_machine.linuxvm.*.public_ip_address[0]
   description = "Linux VM public IP address"
 }
+
+output "detected_os" {
+  value       = data.external.os.result.os
+  description = "Detected OS"
+}

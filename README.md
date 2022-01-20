@@ -32,17 +32,23 @@ The purpose of this repository is to highlight a few interesting topics in regar
 
 ````bash
 
-terraform apply -var="mgmt_source_address_prefix=80.193.188.37"
+terraform apply -var="mgmt_rdp_source_address_prefix=80.193.188.37"
 
 ````
+
+This can also be run from Azure Cloud Shell, which will allow access to the Linux VM but will not create the RDP file for Windows access.
 
 ````bash
 
 git clone https://github.com/tonyskidmore/terraform-ansible-win10.git
 cd terraform-ansible-win10
+# check that you are connected to the correct subscription
+az account show
 terraform init
 terraform plan -out tfplan
 terraform apply tfplan
+./ansible_ssh.cmd
+ansible-playbook playbook.yml
 
 ````
 

@@ -65,9 +65,16 @@ variable "subnet_address_prefix" {
 }
 
 # defaults to automatic detection
-variable "mgmt_source_address_prefix" {
+variable "mgmt_ssh_source_address_prefix" {
   type        = string
-  description = "Source address for NSG rule to allow management access (RDP/SSH)"
+  description = "Source address for NSG rule to allow management access (SSH)"
+  default     = ""
+}
+
+# defaults to automatic detection
+variable "mgmt_rdp_source_address_prefix" {
+  type        = string
+  description = "Source address for NSG rule to allow management access (RDP)"
   default     = ""
 }
 
