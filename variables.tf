@@ -115,7 +115,7 @@ variable "rdp_windows_width" {
   default     = "1600"
 }
 
-variable "rdp_windows_width" {
+variable "rdp_windows_height" {
   type        = string
   description = "Windows RDP windows height setting"
   default     = "1200"

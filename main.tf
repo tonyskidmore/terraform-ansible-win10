@@ -190,11 +190,11 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
   size                = var.linux_vm_size
   admin_username      = var.linux_vm_admin_username
   custom_data = base64encode(templatefile("${path.module}/templates/ansible.tpl", {
-      win_vm_ip                = azurerm_windows_virtual_machine.winvm.private_ip_address
-      ansible_user             = var.win_vm_admin_username
-      ansible_password         = var.win_vm_admin_password
-      windev_ansible_role_repo = var.windev_ansible_role_repo
-      private_key_pem          = base64encode(tls_private_key.linux_ssh.private_key_pem)
+    win_vm_ip                = azurerm_windows_virtual_machine.winvm.private_ip_address
+    ansible_user             = var.win_vm_admin_username
+    ansible_password         = var.win_vm_admin_password
+    windev_ansible_role_repo = var.windev_ansible_role_repo
+    private_key_pem          = base64encode(tls_private_key.linux_ssh.private_key_pem)
     }
   ))
   network_interface_ids = [
