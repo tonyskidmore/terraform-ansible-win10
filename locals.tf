@@ -7,6 +7,7 @@ locals {
   ssh_source_address_prefix = var.mgmt_ssh_source_address_prefix == "" ? data.http.ifconfig.body : var.mgmt_ssh_source_address_prefix
   rdp_source_address_prefix = var.mgmt_rdp_source_address_prefix == "" ? data.http.ifconfig.body : var.mgmt_rdp_source_address_prefix
   win_check                 = data.external.os.result.os == "Windows" ? 1 : 0
+  linux_vm_size             = var.linux_vm_size # TODO: make dynamic based on choices
   source_image_references = [
     {
       "key" : "RedHat",
@@ -20,6 +21,13 @@ locals {
       "publisher" : "canonical",
       "offer" : "0001-com-ubuntu-server-focal"
       "sku" : "20_04-lts"
+      "version" : "latest"
+    },
+    {
+      "key" : "Debian",
+      "publisher" : "Debian",
+      "offer" : "debian-10"
+      "sku" : "10"
       "version" : "latest"
     }
   ]

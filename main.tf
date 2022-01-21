@@ -166,6 +166,21 @@ SETTINGS
 
 }
 
+resource "azurerm_dev_test_global_vm_shutdown_schedule" "winvm" {
+  virtual_machine_id = azurerm_windows_virtual_machine.winvm[0].id
+  location           = azurerm_resource_group.rg[0].location
+  enabled            = true
+
+  daily_recurrence_time = "1900"
+  timezone              = "UTC"
+
+  notification_settings {
+    enabled         = false
+    email           = "user@domain"
+    time_in_minutes = "60"
+    webhook_url     = "https://sample-webhook-url.example.com"
+  }
+}
 resource "azurerm_network_interface" "linuxnic" {
   name                = "nic-${var.linux_vm_name}"
   location            = azurerm_resource_group.rg[0].location
@@ -189,7 +204,7 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
   name                = "vm-${var.linux_vm_name}"
   resource_group_name = azurerm_resource_group.rg[0].name
   location            = azurerm_resource_group.rg[0].location
-  size                = var.linux_vm_size
+  size                = local.linux_vm_size
   admin_username      = var.linux_vm_admin_username
   custom_data = base64encode(templatefile("${path.module}/templates/ansible.tpl", {
     win_vm_ip                = try(azurerm_windows_virtual_machine.winvm[0].private_ip_address, "")
@@ -266,5 +281,3 @@ resource "null_resource" "destroy_rdp_file" {
     command = "del win_vm.rdp"
   }
 }
-
-

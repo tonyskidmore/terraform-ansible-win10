@@ -142,9 +142,9 @@ variable "linux_vm_admin_username" {
 variable "linux_source_image_reference" {
   type        = string
   description = "Linux source image reference"
-  default     = "Ubuntu"
+  default     = "Debian"
   validation {
-    condition     = contains(["RedHat", "Ubuntu"], var.linux_source_image_reference)
+    condition     = contains(["RedHat", "Ubuntu", "Debian"], var.linux_source_image_reference)
     error_message = "The linux_source_image_reference must be a valid value."
   }
 }
