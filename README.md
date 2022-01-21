@@ -20,7 +20,11 @@ The purpose of this repository is to highlight a few interesting topics in regar
 * Isolated Python environments with [pipx](https://pypa.github.io/pipx/)
 * Shift-left development with [pre-commit](https://pre-commit.com/)
 
+Supporting the following scenarios:
 
+| Scenario                         | Default deployment | Description                                                             |
+|----------------------------------|--------------------|-------------------------------------------------------------------------|
+| Windows Azure development system |  yes               | Create a Windows 10 Azure development system e.g. Terraform and Ansible |
 ### Prerequisites
 
 * A Windows system with Terraform CLI installed (tested with Windows 10 21H1 / Terraform v1.0.11 )

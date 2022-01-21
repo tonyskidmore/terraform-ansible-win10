@@ -116,6 +116,7 @@ resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
 }
 
 resource "azurerm_windows_virtual_machine" "winvm" {
+  count               = local.win_check
   name                = "vm-${var.win_vm_name}"
   resource_group_name = azurerm_resource_group.rg[0].name
   location            = azurerm_resource_group.rg[0].location
@@ -144,12 +145,13 @@ resource "azurerm_windows_virtual_machine" "winvm" {
   }
 }
 
+# linux:
+# publisher                  = "Microsoft.Azure.Extensions"
+# type                       = "CustomScript"
 resource "azurerm_virtual_machine_extension" "win_custom_script" {
-  name               = "winrm"
-  virtual_machine_id = azurerm_windows_virtual_machine.winvm.id
-  # linux:
-  # publisher                  = "Microsoft.Azure.Extensions"
-  # type                       = "CustomScript"
+  count                      = local.win_check
+  name                       = "winrm"
+  virtual_machine_id         = azurerm_windows_virtual_machine.winvm[0].id
   publisher                  = "Microsoft.Compute"
   type                       = "CustomScriptExtension"
   type_handler_version       = "1.10"
@@ -190,11 +192,12 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
   size                = var.linux_vm_size
   admin_username      = var.linux_vm_admin_username
   custom_data = base64encode(templatefile("${path.module}/templates/ansible.tpl", {
-    win_vm_ip                = azurerm_windows_virtual_machine.winvm.private_ip_address
+    win_vm_ip                = try(azurerm_windows_virtual_machine.winvm[0].private_ip_address, "")
     ansible_user             = var.win_vm_admin_username
     ansible_password         = var.win_vm_admin_password
     windev_ansible_role_repo = var.windev_ansible_role_repo
     private_key_pem          = base64encode(tls_private_key.linux_ssh.private_key_pem)
+    linux_private_ip         = azurerm_linux_virtual_machine.linuxvm.private_ip_address
     }
   ))
   network_interface_ids = [

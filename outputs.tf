@@ -9,7 +9,7 @@ output "my_ip_address" {
 }
 
 output "winvm_private_ip" {
-  value       = azurerm_windows_virtual_machine.winvm.private_ip_address
+  value       = try(azurerm_windows_virtual_machine.winvm[0].private_ip_address, null)
   description = "Windows VM private IP address"
 }
 
@@ -19,7 +19,7 @@ output "linuxvm_private_ip" {
 }
 
 output "winvm_public_ip" {
-  value       = azurerm_windows_virtual_machine.winvm.*.public_ip_address[0]
+  value       = try(azurerm_windows_virtual_machine.winvm.*.public_ip_address[0], null)
   description = "Windows VM public IP address"
 }
 

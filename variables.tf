@@ -78,6 +78,12 @@ variable "mgmt_rdp_source_address_prefix" {
   default     = ""
 }
 
+variable "win_vm_deploy" {
+  type        = bool
+  description = "Whether to deploy the Windows 10 VM"
+  default     = true
+}
+
 variable "win_vm_name" {
   type        = string
   description = "Windows 10 VM name"
