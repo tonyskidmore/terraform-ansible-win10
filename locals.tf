@@ -6,7 +6,7 @@ locals {
   linux_ip_address          = var.create_public_access ? azurerm_linux_virtual_machine.linuxvm.*.public_ip_address[0] : azurerm_linux_virtual_machine.linuxvm.private_ip_address
   ssh_source_address_prefix = var.mgmt_ssh_source_address_prefix == "" ? data.http.ifconfig.body : var.mgmt_ssh_source_address_prefix
   rdp_source_address_prefix = var.mgmt_rdp_source_address_prefix == "" ? data.http.ifconfig.body : var.mgmt_rdp_source_address_prefix
-  win_check                 = var.win_vm_deploy ? (data.external.os.result.os == "Windows" ? 1 : 0) : 0
+  win_check                 = data.external.os.result.os == "Windows" ? 1 : 0
   source_image_references = [
     {
       "key" : "RedHat",

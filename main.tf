@@ -116,7 +116,7 @@ resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
 }
 
 resource "azurerm_windows_virtual_machine" "winvm" {
-  count               = local.win_check
+  count               = var.win_vm_deploy
   name                = "vm-${var.win_vm_name}"
   resource_group_name = azurerm_resource_group.rg[0].name
   location            = azurerm_resource_group.rg[0].location
@@ -149,7 +149,7 @@ resource "azurerm_windows_virtual_machine" "winvm" {
 # publisher                  = "Microsoft.Azure.Extensions"
 # type                       = "CustomScript"
 resource "azurerm_virtual_machine_extension" "win_custom_script" {
-  count                      = local.win_check
+  count                      = var.win_vm_deploy
   name                       = "winrm"
   virtual_machine_id         = azurerm_windows_virtual_machine.winvm[0].id
   publisher                  = "Microsoft.Compute"

@@ -50,10 +50,14 @@ cd terraform-ansible-win10
 # check that you are connected to the correct subscription
 az account show
 terraform init
-terraform plan -out tfplan
+terraform plan -var="mgmt_rdp_source_address_prefix=80.193.188.37" -out tfplan
 terraform apply tfplan
+# make a note of the output for xxx to use for RDP from your windows system
 ./ansible_ssh.cmd
 ansible-playbook win_dev.yml
+
+# when done from the original command line location
+terraform destroy -auto-approve
 
 ````
 
@@ -61,7 +65,7 @@ Without Windows development system:
 
 ````bash
 
-terraform plan -var "win_vm_deploy=false" -out tfplan
+terraform plan -var "win_vm_deploy=0" -out tfplan
 
 ````
 
