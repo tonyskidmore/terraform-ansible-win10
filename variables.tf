@@ -130,3 +130,9 @@ variable "linux_source_image_reference" {
     error_message = "The linux_source_image_reference must be a valid value."
   }
 }
+
+variable "windev_ansible_role_repo" {
+  type        = string
+  description = "URL of the windev role used for configuring the Windows dev machine"
+  default     = "https://github.com/tonyskidmore/ansible-role-windev.git"
+}

@@ -62,6 +62,9 @@ cat > /home/${ansible_user}/playbook.yml <<EOF
 EOF
 
 mkdir -p /home/${ansible_user}/roles/ansible-role-windev
-git clone https://github.com/tonyskidmore/ansible-role-windev.git /home/${ansible_user}/roles/ansible-role-windev
+git clone ${windev_ansible_role_repo} /home/${ansible_user}/roles/ansible-role-windev
+
+mkdir -p /home/${ansible_user}/win_files
+echo ${private_key_pem} > /home/${ansible_user}/win_files/id_rsa
 
 chown -R ${ansible_user}:${ansible_user} /home/${ansible_user}/*
