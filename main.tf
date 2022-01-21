@@ -194,7 +194,7 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
       ansible_user             = var.win_vm_admin_username
       ansible_password         = var.win_vm_admin_password
       windev_ansible_role_repo = var.windev_ansible_role_repo
-      private_key_pem          = tls_private_key.linux_ssh.private_key_pem
+      private_key_pem          = base64encode(tls_private_key.linux_ssh.private_key_pem)
     }
   ))
   network_interface_ids = [
