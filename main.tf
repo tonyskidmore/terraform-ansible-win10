@@ -167,6 +167,7 @@ SETTINGS
 }
 
 resource "azurerm_dev_test_global_vm_shutdown_schedule" "winvm" {
+  count              = var.win_vm_deploy
   virtual_machine_id = azurerm_windows_virtual_machine.winvm[0].id
   location           = azurerm_resource_group.rg[0].location
   enabled            = true
