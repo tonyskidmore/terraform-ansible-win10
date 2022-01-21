@@ -57,6 +57,7 @@ data "http" "ifconfig" {
 }
 
 resource "azurerm_network_interface" "nic" {
+  count               = var.win_vm_deploy
   name                = "nic-${var.win_vm_name}"
   location            = azurerm_resource_group.rg[0].location
   resource_group_name = azurerm_resource_group.rg[0].name
@@ -70,7 +71,7 @@ resource "azurerm_network_interface" "nic" {
 }
 
 resource "azurerm_public_ip" "pip" {
-  count               = var.create_public_access ? 2 : 0
+  count               = var.create_public_access ? (var.win_vm_deploy == 0 ? 1 : 2) : 0
   name                = "vm-pip-${count.index}"
   location            = azurerm_resource_group.rg[0].location
   resource_group_name = azurerm_resource_group.rg[0].name
@@ -124,7 +125,7 @@ resource "azurerm_windows_virtual_machine" "winvm" {
   admin_username      = var.win_vm_admin_username
   admin_password      = var.win_vm_admin_password
   network_interface_ids = [
-    azurerm_network_interface.nic.id,
+    azurerm_network_interface.nic[0].id,
   ]
 
   identity {
@@ -191,7 +192,7 @@ resource "azurerm_network_interface" "linuxnic" {
     name                          = "internal"
     subnet_id                     = local.subnet_id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = var.create_public_access ? element(azurerm_public_ip.pip.*.id, 1) : null
+    public_ip_address_id          = var.create_public_access ? element(azurerm_public_ip.pip.*.id, 0) : null
   }
 }
 
