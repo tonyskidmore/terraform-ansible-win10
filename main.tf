@@ -252,7 +252,7 @@ data "external" "os" {
 resource "null_resource" "create_rdp_file" {
   count = local.win_check
   provisioner "local-exec" {
-    command = "Powershell -file ${path.module}/scripts/New-RdpFile.ps1 -Path ${path.module} -FullAddress ${local.win_ip_address} -Username ${var.win_vm_admin_username} -Password ${var.win_vm_admin_password}"
+    command = "Powershell -file ${path.module}/scripts/New-RdpFile.ps1 -Path ${path.module} -FullAddress ${local.win_ip_address} -Username ${var.win_vm_admin_username} -Password ${var.win_vm_admin_password} -DesktopWidth ${var.rdp_windows_width} -DesktopHeight ${var.rdp_windows_height}"
   }
 
 }

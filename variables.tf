@@ -109,6 +109,18 @@ variable "linux_vm_name" {
   default     = "linux-01"
 }
 
+variable "rdp_windows_width" {
+  type        = string
+  description = "Windows RDP windows width setting"
+  default     = "1600"
+}
+
+variable "rdp_windows_width" {
+  type        = string
+  description = "Windows RDP windows height setting"
+  default     = "1200"
+}
+
 variable "linux_vm_size" {
   type        = string
   description = "Linux VM size"
