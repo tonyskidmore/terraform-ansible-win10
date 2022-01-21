@@ -66,7 +66,7 @@ resource "azurerm_network_interface" "nic" {
     name                          = "internal"
     subnet_id                     = local.subnet_id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = var.create_public_access ? element(azurerm_public_ip.pip.*.id, 0) : null
+    public_ip_address_id          = var.create_public_access ? element(azurerm_public_ip.pip.*.id, 1) : null
   }
 }
 
