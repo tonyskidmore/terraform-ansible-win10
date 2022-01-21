@@ -3,7 +3,7 @@
 source /etc/os-release
 
 # perform system and any python3 required updates
-if [[ "$ID" == "ubuntu" ]]
+if [[ "$ID" == "ubuntu" ]] || [[ "$ID" == "debian" ]]
 then
   apt update
   apt -y upgrade
