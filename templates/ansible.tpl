@@ -72,9 +72,11 @@ git clone ${windev_ansible_role_repo} /home/${ansible_user}/roles/ansible-role-w
 mkdir -p /home/${ansible_user}/win_files
 echo ${private_key_pem} > /home/${ansible_user}/win_files/id_rsa
 
+ip=$(hostname -I)
+
 cat > /home/${ansible_user}/win_files/inventory <<EOF
 [linux]
-${linux_private_ip}
+$ip
 
 [linux:vars]
 ansible_user=${ansible_user}

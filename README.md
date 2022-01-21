@@ -53,7 +53,15 @@ terraform init
 terraform plan -out tfplan
 terraform apply tfplan
 ./ansible_ssh.cmd
-ansible-playbook playbook.yml
+ansible-playbook win_dev.yml
+
+````
+
+Without Windows development system:
+
+````bash
+
+terraform plan -var "win_vm_deploy=false" -out tfplan
 
 ````
 
