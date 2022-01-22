@@ -80,6 +80,7 @@ $ip
 
 [linux:vars]
 ansible_user=${ansible_user}
+ansible_ssh_extra_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 
 EOF
 
@@ -88,6 +89,7 @@ cat > /home/${ansible_user}/win_files/ansible.cfg <<EOF
 inventory = ./inventory
 deprecation_warnings = false
 callback_whitelist = ansible.posix.profile_tasks
+
 EOF
 
 cat > /home/${ansible_user}/win_files/linux.yml <<EOF
@@ -98,15 +100,21 @@ cat > /home/${ansible_user}/win_files/linux.yml <<EOF
 
   pre_tasks:
 
-    - name: Get ansible nodename
-      debug:
-        var: ansible_nodename
+    - name: Get ansible role content
+      ansible.builtin.command: "ansible-galaxy install -r requirements.yml --roles-path {{ playbook_dir }}/roles"
 
   tasks:
 
-    - name: Run ansible-role-demo role
+    - name: Run ansible-role-apache
       include_role:
-        name: ansible-role-demo
+        name: ansible-role-apache
+
+EOF
+
+cat > /home/${ansible_user}/win_files/requirements.yml <<EOF
+- src: https://github.com/geerlingguy/ansible-role-apache
+  version: master
+  name: ansible-role-apache
 
 EOF
 
