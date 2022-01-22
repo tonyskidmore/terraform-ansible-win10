@@ -3,7 +3,9 @@
 
 ### Overview
 
-The purpose of this repository is to highlight a few interesting topics in regards to Azure, Terraform, Ansible and a few general development areas, namely:
+The purpose of this repository is to provide a base VM deployment to support some lab scenarios in regards to development and automation.
+
+The base deployment highlights a few interesting topics in regards to Azure, Terraform, Ansible and a few general development areas, namely:
 
 * Using Terraform to create Windows and Linux VMs
 * Using the Azure [Custom Script Extension for Windows](https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows) to bootstrap a Windows node for Ansible access

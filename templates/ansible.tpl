@@ -109,6 +109,8 @@ cat > /home/${ansible_user}/win_files/linux.yml <<EOF
     - name: Run ansible-role-apache
       include_role:
         name: ansible-role-apache
+        apply:
+          become: yes
 
 EOF
 
