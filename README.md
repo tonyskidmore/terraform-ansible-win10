@@ -27,7 +27,9 @@ Supporting the following scenarios:
 | Windows Azure development system |  yes               | Create a Windows 10 Azure development system e.g. Terraform and Ansible |
 ### Prerequisites
 
-* A Windows system with Terraform CLI installed (tested with Windows 10 21H1 / Terraform v1.0.11 )
+The ideal system to run this on would be a Windows 10 system with all the prerequisites installed.  This will allow for the automatic creation of both the `ansible_ssh.cmd` and the `win_vm.rdp` file that makes it easy to connect to the deployed Linux and Windows VMs.
+
+* A system with Terraform CLI installed and the Azure CLI (tested with Windows 10 21H1 / Terraform v1.0.11 )
 * A valid Azure subscription
 * Permissions in the subscription to create the required resources
 * SSH executable (to establish SSH connection to the Ansible host)
@@ -35,13 +37,9 @@ Supporting the following scenarios:
 * Able to run PowerShell scripts (if running on Windows)
 * When running `terraform destroy` the Windows VM should be powered on
 
-````bash
 
-terraform apply -var="mgmt_rdp_source_address_prefix=80.193.188.37"
+This can also be run from Azure Cloud Shell (https://shell.azure.com), which will allow access to the Linux VM but will not create the RDP file for Windows access.
 
-````
-
-This can also be run from Azure Cloud Shell, which will allow access to the Linux VM but will not create the RDP file for Windows access.
 
 ````bash
 
@@ -60,6 +58,8 @@ terraform apply tfplan
 # after cloud-init has completed and files appear in $HOME
 # view cloud-init status by:
 # tail -f /var/log/cloud-init-output.log
+
+# Use Ansible to configure the Windows 10 VM as a development box
 ansible-playbook win_dev.yml
 
 # connect via RDP to the deployed Windows 10 VM using the win_vm_admin_username and win_vm_admin_password credentials
