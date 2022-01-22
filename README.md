@@ -58,6 +58,8 @@ terraform apply tfplan
 # connect to the deployed Linux VM
 ./ansible_ssh.cmd
 # after cloud-init has completed and files appear in $HOME
+# view cloud-init status by:
+# tail -f /var/log/cloud-init-output.log
 ansible-playbook win_dev.yml
 
 # connect via RDP to the deployed Windows 10 VM using the win_vm_admin_username and win_vm_admin_password credentials
