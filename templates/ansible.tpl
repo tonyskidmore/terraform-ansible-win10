@@ -102,6 +102,7 @@ cat > /home/${ansible_user}/win_files/linux.yml <<EOF
 
     - name: Get ansible role content
       ansible.builtin.command: "ansible-galaxy install -r requirements.yml --roles-path {{ playbook_dir }}/roles"
+      delegate_to: localhost
 
   tasks:
 
