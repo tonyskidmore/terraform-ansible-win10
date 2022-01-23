@@ -102,7 +102,35 @@ cat > /home/${ansible_user}/win_files/linux.yml <<EOF
 
     - name: Get ansible role content
       ansible.builtin.command: "ansible-galaxy install -r requirements.yml --roles-path {{ playbook_dir }}/roles"
+      args:
+        creates: "{{ playbook_dir }}/roles"
       delegate_to: localhost
+
+    - name: Configure firewalld on RedHat
+      block:
+
+      - name: Permit traffic in default zone for http sservice
+        ansible.posix.firewalld:
+          service: http
+          permanent: yes
+          state: enabled
+        register: enable_http
+        become: yes
+
+      - name: Debug enable_http
+        debug:
+          var: enable_http
+
+      - name: Reload service firewalld
+        systemd:
+          name: firewalld
+          state: reloaded
+        become: yes
+        when:
+          - enable_http is changed
+
+      when:
+        - ansible_os_family == "RedHat"
 
   tasks:
 
