@@ -8,9 +8,12 @@ echo "Running on $ID"
 if [[ "$ID" == "ubuntu" ]] || [[ "$ID" == "debian" ]]
 then
   echo "Running apt commands on Debian based OS"
-  apt update
-  apt -y upgrade
-  apt install -y python3-pip
+  while sudo fuser /var/{lib/{dpkg,apt/lists},cache/apt/archives}/lock >/dev/null 2>&1; do
+    sleep 1
+    apt update
+    apt -y upgrade
+    apt install -y python3-pip git
+  done
 elif [[ "$ID" == "rhel" ]]
 then
   echo "Running dnf commands on RedHat based OS"
