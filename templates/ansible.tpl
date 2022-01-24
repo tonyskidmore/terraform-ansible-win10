@@ -1,15 +1,19 @@
 #!/bin/bash
 
+echo "Starting cloud-init script"
 source /etc/os-release
+echo "Running on $ID"
 
 # perform system and any python3 required updates
 if [[ "$ID" == "ubuntu" ]] || [[ "$ID" == "debian" ]]
 then
+  echo "Running apt commands on Debian based OS"
   apt update
   apt -y upgrade
   apt install -y python3-pip
 elif [[ "$ID" == "rhel" ]]
 then
+  echo "Running dnf commands on RedHat based OS"
   dnf -y install git
   dnf -y update
 else
