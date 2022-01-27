@@ -121,12 +121,16 @@ cat > /home/${ansible_user}/win_files/linux.yml <<EOF
           service: http
           permanent: yes
           state: enabled
-        register: enable_http
+        register: firewalld_ports
         become: yes
+        loop:
+          - "22/tcp"
+          - "80/tcp"
+          - "443/tcp"
 
       - name: Debug enable_http
         debug:
-          var: enable_http
+          var: firewalld_ports
 
       - name: Reload service firewalld
         systemd:
@@ -134,7 +138,7 @@ cat > /home/${ansible_user}/win_files/linux.yml <<EOF
           state: reloaded
         become: yes
         when:
-          - enable_http is changed
+          - firewalld_ports is changed
 
       when:
         - ansible_os_family == "RedHat"
