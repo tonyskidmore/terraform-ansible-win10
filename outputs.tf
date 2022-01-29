@@ -32,3 +32,8 @@ output "detected_os" {
   value       = data.external.os.result.os
   description = "Detected OS"
 }
+
+output "next_step" {
+  value       = "./ansible_ssh.cmd"
+  description = "Next command to run"
+}
