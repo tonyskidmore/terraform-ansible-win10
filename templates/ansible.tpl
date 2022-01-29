@@ -68,6 +68,8 @@ cat > /home/${ansible_user}/win_dev.yml <<EOF
     - name: Run ansible-role-windev role
       include_role:
         name: ansible-role-windev
+      tags:
+        - windows_terminal
 
 EOF
 
