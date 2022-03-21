@@ -108,6 +108,12 @@ variable "win_vm_admin_password" {
   default     = "D3vPassw0rd1234!"
   sensitive   = true
 }
+# https://docs.microsoft.com/en-us/azure/virtual-network/create-vm-accelerated-networking-powershell
+variable "win_nic_accelerated" {
+  type        = bool
+  description = "Specify whether accelerated networking should be used for Windows VM"
+  default     = true
+}
 
 variable "linux_vm_name" {
   type        = string

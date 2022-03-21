@@ -40,8 +40,36 @@ The ideal system to run this on would be a Windows 10 system with all the prereq
 * When running `terraform destroy` the Windows VM should be powered on
 
 
-This can also be run from Azure Cloud Shell (https://shell.azure.com), which will allow access to the Linux VM but will not create the RDP file for Windows access.
+### Deployment
 
+Basic deployment from a Windows 10 system after prerequisites are in place.
+
+````powershell
+
+git clone https://github.com/tonyskidmore/terraform-ansible-win10.git
+cd terraform-ansible-win10
+
+# check that you are connected to the correct subscription
+az account show
+
+terraform init
+terraform plan -out tfplan
+terraform apply tfplan
+
+# connect to the deployed Linux VM
+./ansible_ssh.cmd
+
+# after cloud-init has completed and files appear in $HOME
+# view cloud-init status by:
+# tail -f /var/log/cloud-init-output.log
+ansible-playbook win_dev.yml
+
+# when done from the original command line location
+terraform destroy -auto-approve
+
+````
+
+This can also be run from Azure Cloud Shell (https://shell.azure.com), which will allow access to the Linux VM but will not create the RDP file for Windows access.
 
 ````bash
 
@@ -50,7 +78,8 @@ cd terraform-ansible-win10
 # check that you are connected to the correct subscription
 az account show
 terraform init
-# https://ipinfo.io/ip to get your Windows external IP and enter below
+# https://ipinfo.io/ip to get the external IP of the Windows system you will be connecting
+# to the Windows VM from and enter below
 terraform plan -var="mgmt_rdp_source_address_prefix=xxx.xxx.xxx.xxx" -out tfplan
 terraform apply tfplan
 # make a note of the output of "winvm_public_ip" to use for RDP from your windows system

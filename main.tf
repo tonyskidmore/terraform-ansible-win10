@@ -57,10 +57,11 @@ data "http" "ifconfig" {
 }
 
 resource "azurerm_network_interface" "nic" {
-  count               = var.win_vm_deploy
-  name                = "nic-${var.win_vm_name}"
-  location            = azurerm_resource_group.rg[0].location
-  resource_group_name = azurerm_resource_group.rg[0].name
+  count                         = var.win_vm_deploy
+  name                          = "nic-${var.win_vm_name}"
+  location                      = azurerm_resource_group.rg[0].location
+  resource_group_name           = azurerm_resource_group.rg[0].name
+  enable_accelerated_networking = var.win_nic_accelerated
 
   ip_configuration {
     name                          = "internal"
